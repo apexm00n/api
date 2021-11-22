@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs')
 
 const register = async (req, res) => {
     const {nickname, password} = req.body
+    console.log(nickname, password)
+    if(nickname && password){
     const candidate = await User.findOne({nickname: nickname})
     if (candidate){
         res.status(409).send("That nickname already taken")
@@ -23,12 +25,15 @@ const register = async (req, res) => {
           )
         user.token = token
         await user.save()
-        res.status(201).json(token)
+        res.status(201).json(token)}
+    } else {
+        res.status(500).send("Invalid data")
     }
 }
 
 const auth = async (req, res) => {
     const {nickname, password} = req.body
+    console.log(nickname, password)
     const candidate = await User.findOne({nickname: nickname})
     if(candidate){
         const passwordresult = bcrypt.compareSync(password, candidate.password)
@@ -43,7 +48,7 @@ const auth = async (req, res) => {
             user.save()
             res.status(200).json(token)
         } else {res.status(401).send("Invalid password")}
-    } else {res.status(404).send("User not found")}
+    } else {res.status(400).send("User not found")}
 }
 
 module.exports = {register, auth}

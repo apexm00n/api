@@ -6,7 +6,7 @@ const auth = require('../middleware/auth')
 
 const router = express.Router()
 
-router.post('/',auth, addComment)
+router.post('/', addComment)
 router.delete('/:id',auth, deleteComment)
 router.get('/', getComment)
 

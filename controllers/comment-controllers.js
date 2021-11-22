@@ -2,11 +2,15 @@ const Comment = require('../models/Comment')
 
 const addComment = (req, res) => {
     const {postId, parentId, nickname, message} = req.body
-    const comment = new Comment({postId, parentId, nickname, message})
-    comment
-    .save()
-    .then((comment) => {res.json(comment.id)})
-    .catch((err) => {res.status(500).send(err.massage)})
+    if (parentId, postId, nickname, message) {
+        const comment = new Comment({postId, parentId, nickname, message})
+        comment
+        .save()
+        .then((comment) => {res.json(comment.id)})
+        .catch((err) => {res.status(500).send(err.massage)})
+    } else {
+        res.status(500).send("Invalid data")
+    }
 }
 
 
